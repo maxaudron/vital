@@ -1,10 +1,13 @@
+ifndef DESTDIR
+	DESTDIR=/usr
+endif
 
 ifndef CONFIG
 	CONFIG=Release
 endif
 
 ifndef LIBDIR
-	LIBDIR=/usr/lib/
+	LIBDIR=$(DESTDIR)/lib/
 endif
 
 BUILD_DATE="$(shell date +'%Y %m %d %H %M')"
@@ -30,24 +33,24 @@ endif
 PROGRAM = vital
 LIB_PROGRAM = Vital
 LIB_PROGRAM_FX = VitalFX
-BIN = $(DESTDIR)/usr/bin
+BIN = $(DESTDIR)/bin
 BINFILE = $(BIN)/$(PROGRAM)
-LV2 = $(DESTDIR)/$(LIBDIR)/lv2/$(LIB_PROGRAM).lv2
-EFFECTS_LV2 = $(DESTDIR)/$(LIBDIR)/lv2/$(LIB_PROGRAM_FX).lv2
-VSTDIR = $(DESTDIR)/$(LIBDIR)/vst
+LV2 = $(LIBDIR)/lv2/$(LIB_PROGRAM).lv2
+EFFECTS_LV2 = $(LIBDIR)/lv2/$(LIB_PROGRAM_FX).lv2
+VSTDIR = $(LIBDIR)/vst
 VST = $(VSTDIR)/$(LIB_PROGRAM).so
 VST3DIR = $(DESTDIR)/$(LIBDIR)/vst3
 VST3 = $(VST3DIR)/$(LIB_PROGRAM).vst3
 VST3SUBDIR = Contents/x86_64-linux
 EFFECTS_VST = $(VSTDIR)/$(LIB_PROGRAM_FX).so
 EFFECTS_VST3 = $(VST3DIR)/$(LIB_PROGRAM_FX).vst3
-SYSDATA = $(DESTDIR)/usr/share/$(PROGRAM)
-MAN = $(DESTDIR)/usr/share/man/man1/
-CHANGES = $(DESTDIR)/usr/share/doc/$(PROGRAM)/
-DESKTOP = $(DESTDIR)/usr/share/applications/
+SYSDATA = $(DESTDIR)/share/$(PROGRAM)
+MAN = $(DESTDIR)/share/man/man1/
+CHANGES = $(DESTDIR)/share/doc/$(PROGRAM)/
+DESKTOP = $(DESTDIR)/share/applications/
 ZIP_FOLDER = $(LIB_PROGRAM)Binaries
 
-ICONS      = $(DESTDIR)/usr/share/icons/hicolor/
+ICONS      = $(DESTDIR)/share/icons/hicolor/
 ICON16     = images/vital_icon_16.png
 ICON22     = images/vital_icon_22.png
 ICON24     = images/vital_icon_24.png
@@ -56,7 +59,7 @@ ICON48     = images/vital_icon_48.png
 ICON64     = images/vital_icon_64.png
 ICON128    = images/vital_icon_128.png
 ICON256    = images/vital_icon_256.png
-XPMDEST    = $(DESTDIR)/usr/share/pixmaps
+XPMDEST    = $(DESTDIR)/share/pixmaps
 ICONXPM    = images/vital.xpm
 
 ICONDEST16 = $(ICONS)/16x16/apps
@@ -127,27 +130,27 @@ install_standalone: standalone install_icons
 
 install_lv2: lv2
 	install -d $(LV2)
-	install -m644 plugin/builds/linux_lv2/Vital.lv2/* $(LV2)
+	install -m644 plugin/builds/linux_lv2/$(LIB_PROGRAM).lv2/* $(LV2)
 
 install_effects_lv2: effects_lv2
 	install -d $(EFFECTS_LV2)
-	install -m644 effects/builds/linux_lv2/VitalFX.lv2/* $(EFFECTS_LV2)
+	install -m644 effects/builds/linux_lv2/$(LIB_PROGRAM_FX).lv2/* $(EFFECTS_LV2)
 
 install_vst: vst
 	install -d $(VSTDIR)
-	install plugin/builds/linux_vst/build/Vital.so $(VST)
+	install plugin/builds/linux_vst/build/$(LIB_PROGRAM).so $(VST)
 
 install_effects_vst: effects_vst
 	install -d $(VSTDIR)
-	install effects/builds/linux_vst/build/VitalFX.so $(EFFECTS_VST)
+	install effects/builds/linux_vst/build/$(LIB_PROGRAM_FX).so $(EFFECTS_VST)
 
 install_vst3: vst3
 	install -d $(VST3)/$(VST3SUBDIR)
-	install -m644 plugin/builds/linux_vst/build/Vital.vst3/$(VST3SUBDIR)/* $(VST3)/$(VST3SUBDIR)
+	install -m644 plugin/builds/linux_vst/build/$(LIB_PROGRAM).vst3/$(VST3SUBDIR)/* $(VST3)/$(VST3SUBDIR)
 
 install_effects_vst3: effects_vst3
 	install -d $(EFFECTS_VST3)/$(VST3SUBDIR)
-	install -m644 plugin/builds/linux_vst/build/VitalFX.vst3/$(VST3SUBDIR)/* $(EFFECTS_VST3)/$(VST3SUBDIR)
+	install -m644 plugin/builds/linux_vst/build/$(LIB_PROGRAM_FX).vst3/$(VST3SUBDIR)/* $(EFFECTS_VST3)/$(VST3SUBDIR)
 
 install: install_standalone install_lv2 install_vst install_vst3
 install_effects: install_effects_lv2 install_effects_vst install_effects_vst3
@@ -185,9 +188,9 @@ dist:
 
 zip_binaries:
 	mkdir $(ZIP_FOLDER)
-	cp -r plugin/builds/linux_lv2/Vital.lv2 $(ZIP_FOLDER)
-	cp -r plugin/builds/linux_vst/build/Vital.so $(ZIP_FOLDER)
-	cp -r plugin/builds/linux_vst/build/Vital.vst3 $(ZIP_FOLDER)
+	cp -r plugin/builds/linux_lv2/$(LIB_PROGRAM).lv2 $(ZIP_FOLDER)
+	cp -r plugin/builds/linux_vst/build/$(LIB_PROGRAM).so $(ZIP_FOLDER)
+	cp -r plugin/builds/linux_vst/build/$(LIB_PROGRAM).vst3 $(ZIP_FOLDER)
 	cp -r standalone/builds/linux/build/$(PROGRAM) $(ZIP_FOLDER)
 	zip -r $(ZIP_FOLDER) $(ZIP_FOLDER)
 
