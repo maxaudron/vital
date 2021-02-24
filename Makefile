@@ -20,13 +20,13 @@ VERSION := $(shell sh -c 'grep -oh -m 1 "VERSION=[0-9\.]*" standalone/builds/lin
 MACHINE := $(shell sh -c 'uname -m 2> /dev/null || echo not')
 ifneq (,$(findstring aarch,$(MACHINE)))
 	SIMDFLAGS := -march=armv8-a -mtune=cortex-a53
-  GLFLAGS := -DOPENGL_ES=1
+  GLFLAGS := -DOPENGL_ES=1 -DNO_AUTH=1
 else
 ifneq (,$(findstring arm,$(MACHINE)))
 	SIMDFLAGS := -march=armv8-a -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
-  GLFLAGS := -DOPENGL_ES=1
+  GLFLAGS := -DOPENGL_ES=1 -DNO_AUTH=1
 else
-	SIMDFLAGS := -msse2
+	SIMDFLAGS := -msse2 -DNO_AUTH=1
 endif
 endif
 
