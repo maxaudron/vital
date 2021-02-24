@@ -30,9 +30,9 @@ else
 endif
 endif
 
-PROGRAM = vital
-LIB_PROGRAM = Vital
-LIB_PROGRAM_FX = VitalFX
+PROGRAM = vial
+LIB_PROGRAM = Vial
+LIB_PROGRAM_FX = VialFX
 BIN = $(DESTDIR)/bin
 BINFILE = $(BIN)/$(PROGRAM)
 LV2 = $(LIBDIR)/lv2/$(LIB_PROGRAM).lv2
